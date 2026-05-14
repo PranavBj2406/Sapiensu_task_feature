@@ -1,4 +1,4 @@
-from models import DirectorChange
+from .models import DirectorChange
 from typing import Optional
 import re
 

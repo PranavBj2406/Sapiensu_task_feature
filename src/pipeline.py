@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
-from pdf_extractor import extract_text_from_pdf
-from classifier import extract_from_text
-from validator import validate_record
+from src.pdf_extractor import extract_text_from_pdf
+from src.classifier import extract_from_text
+from src.validator import validate_record
 
 RAW_DIR = Path("pdfs")
 OUTPUT_FILE = Path("data/output/extractions.json")
@@ -39,7 +39,7 @@ def run_pipeline():
                 failed.append(pdf_path.name)
                 continue
             
-            changes = extract_from_text(text, pdf_path.name)
+            changes = extract_from_text(text, pdf_path.name)  # ✅ FIXED: call classifier, not extractor again
             
             for change in changes:
                 validated = validate_record(change, pdf_path.name)
