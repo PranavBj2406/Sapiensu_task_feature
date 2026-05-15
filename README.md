@@ -6,7 +6,7 @@
 1. Clone the repository
 2. Install dependencies: `pip install -r requirements.txt`
 3. Create `.env` and add your API key with name GEMINI_API_KEY="val"
-4. Place PDFs in `pdfs/` folder
+4. Create folder called pdfs in the root directory and place PDFs in `pdfs/` folder
 5. Run: `python -m src.pipeline`
 6. Output will be saved to `data/output/extractions.json`
 
