@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   ArrowRight,
   Globe,
@@ -12,19 +13,20 @@ import {
   AlertCircle,
   FileText,
   Shield,
+  Leaf,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
+import footer from "@/assets/footer.png";
 /* ─────────────── PDF Flow Animation ─────────────── */
 function PdfFlowAnimation() {
-  const GREEN       = "#2d6a4f";
-  const GREEN_MID   = "#40916c";
+  const GREEN = "#2d6a4f";
+  const GREEN_MID = "#40916c";
   const GREEN_LIGHT = "#74c69d";
-  const CREAM       = "#f5f5dc";
-  const CREAM_DARK  = "#e8e8c8";
-  const INK         = "#1b3a2d";
+  const CREAM = "#f5f5dc";
+  const CREAM_DARK = "#e8e8c8";
+  const INK = "#1b3a2d";
 
   const leftPaths = [
     "M 72,78  C 175,78  240,178 302,178",
@@ -36,10 +38,10 @@ function PdfFlowAnimation() {
     "M 342,178 C 445,178 468,178 572,178",
     "M 342,178 C 404,178 468,278 572,278",
   ];
-
-  const pdfDelays  = ["0s", "0.9s", "1.8s"];
+  const MotionImage = motion(Image);
+  const pdfDelays = ["0s", "0.9s", "1.8s"];
   const dataDelays = ["2.6s", "3.3s", "4.0s"];
-  const dur        = "2.3s";
+  const dur = "2.3s";
 
   return (
     <svg
@@ -49,16 +51,26 @@ function PdfFlowAnimation() {
       style={{ overflow: "visible" }}
     >
       <defs>
-        {leftPaths.map((d, i)  => <path key={`lp${i}`}  id={`lpath${i}`}  d={d} />)}
-        {rightPaths.map((d, i) => <path key={`rp${i}`}  id={`rpath${i}`}  d={d} />)}
+        {leftPaths.map((d, i) => (
+          <path key={`lp${i}`} id={`lpath${i}`} d={d} />
+        ))}
+        {rightPaths.map((d, i) => (
+          <path key={`rp${i}`} id={`rpath${i}`} d={d} />
+        ))}
 
         <radialGradient id="centerGlowLight" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor={GREEN_MID}   stopOpacity="0.18" />
-          <stop offset="100%" stopColor={GREEN_MID}   stopOpacity="0"    />
+          <stop offset="0%" stopColor={GREEN_MID} stopOpacity="0.18" />
+          <stop offset="100%" stopColor={GREEN_MID} stopOpacity="0" />
         </radialGradient>
 
         <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor={GREEN} floodOpacity="0.18" />
+          <feDropShadow
+            dx="0"
+            dy="2"
+            stdDeviation="3"
+            floodColor={GREEN}
+            floodOpacity="0.18"
+          />
         </filter>
 
         <filter id="dotGlow">
@@ -75,147 +87,408 @@ function PdfFlowAnimation() {
 
       {/* Curved dashed path lines */}
       {leftPaths.map((d, i) => (
-        <path key={`ll${i}`} d={d} fill="none"
-          stroke={GREEN_MID} strokeWidth="1.4"
-          strokeDasharray="5 5" opacity="0.45" />
+        <path
+          key={`ll${i}`}
+          d={d}
+          fill="none"
+          stroke={GREEN_MID}
+          strokeWidth="1.4"
+          strokeDasharray="5 5"
+          opacity="0.45"
+        />
       ))}
       {rightPaths.map((d, i) => (
-        <path key={`rl${i}`} d={d} fill="none"
-          stroke={GREEN_MID} strokeWidth="1.4"
-          strokeDasharray="5 5" opacity="0.45" />
+        <path
+          key={`rl${i}`}
+          d={d}
+          fill="none"
+          stroke={GREEN_MID}
+          strokeWidth="1.4"
+          strokeDasharray="5 5"
+          opacity="0.45"
+        />
       ))}
 
       {/* Pulsing rings from center */}
       {[1, 2, 3].map((n) => (
-        <circle key={`ring${n}`} cx="322" cy="178" r={38 + n * 14}
-          fill="none" stroke={GREEN_MID} strokeWidth="1" opacity="0">
-          <animate attributeName="r"
+        <circle
+          key={`ring${n}`}
+          cx="322"
+          cy="178"
+          r={38 + n * 14}
+          fill="none"
+          stroke={GREEN_MID}
+          strokeWidth="1"
+          opacity="0"
+        >
+          <animate
+            attributeName="r"
             values={`${38 + n * 10};${62 + n * 18}`}
-            dur="2.6s" begin={`${(n - 1) * 0.87}s`} repeatCount="indefinite" />
-          <animate attributeName="opacity"
+            dur="2.6s"
+            begin={`${(n - 1) * 0.87}s`}
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
             values="0.45;0"
-            dur="2.6s" begin={`${(n - 1) * 0.87}s`} repeatCount="indefinite" />
+            dur="2.6s"
+            begin={`${(n - 1) * 0.87}s`}
+            repeatCount="indefinite"
+          />
         </circle>
       ))}
 
       {/* ── LEFT: PDF document cards ── */}
       {[78, 178, 278].map((cy, i) => (
         <g key={`pdf${i}`}>
-          <rect x="20" y={cy - 30} width="52" height="60" rx="6"
-            fill={CREAM} stroke={GREEN_MID} strokeWidth="1.4"
-            filter="url(#softShadow)" />
+          <rect
+            x="20"
+            y={cy - 30}
+            width="52"
+            height="60"
+            rx="6"
+            fill={CREAM}
+            stroke={GREEN_MID}
+            strokeWidth="1.4"
+            filter="url(#softShadow)"
+          />
           {/* Folded corner */}
-          <path d={`M ${20 + 37},${cy - 30} L ${72},${cy - 30 + 15} L ${20 + 37},${cy - 30 + 15} Z`}
-            fill={CREAM_DARK} opacity="0.7" />
-          <line x1="38" y1={cy - 30} x2="72" y2={cy - 30 + 15} stroke={GREEN_MID} strokeWidth="0.8" opacity="0.4" />
+          <path
+            d={`M ${20 + 37},${cy - 30} L ${72},${cy - 30 + 15} L ${20 + 37},${cy - 30 + 15} Z`}
+            fill={CREAM_DARK}
+            opacity="0.7"
+          />
+          <line
+            x1="38"
+            y1={cy - 30}
+            x2="72"
+            y2={cy - 30 + 15}
+            stroke={GREEN_MID}
+            strokeWidth="0.8"
+            opacity="0.4"
+          />
           {/* Text rows */}
-          <rect x="28" y={cy - 10} width="34" height="2.5" rx="1.2" fill={GREEN} opacity="0.55" />
-          <rect x="28" y={cy - 4}  width="28" height="2.5" rx="1.2" fill={GREEN} opacity="0.38" />
-          <rect x="28" y={cy + 2}  width="30" height="2.5" rx="1.2" fill={GREEN} opacity="0.38" />
-          <rect x="28" y={cy + 8}  width="20" height="2.5" rx="1.2" fill={GREEN} opacity="0.25" />
+          <rect
+            x="28"
+            y={cy - 10}
+            width="34"
+            height="2.5"
+            rx="1.2"
+            fill={GREEN}
+            opacity="0.55"
+          />
+          <rect
+            x="28"
+            y={cy - 4}
+            width="28"
+            height="2.5"
+            rx="1.2"
+            fill={GREEN}
+            opacity="0.38"
+          />
+          <rect
+            x="28"
+            y={cy + 2}
+            width="30"
+            height="2.5"
+            rx="1.2"
+            fill={GREEN}
+            opacity="0.38"
+          />
+          <rect
+            x="28"
+            y={cy + 8}
+            width="20"
+            height="2.5"
+            rx="1.2"
+            fill={GREEN}
+            opacity="0.25"
+          />
           {/* PDF label */}
-          <text x="46" y={cy + 23} textAnchor="middle" fontSize="7.5"
-            fill={GREEN} fontWeight="700" fontFamily="DM Sans, sans-serif"
-            opacity="0.85">PDF</text>
+          <text
+            x="46"
+            y={cy + 23}
+            textAnchor="middle"
+            fontSize="7.5"
+            fill={GREEN}
+            fontWeight="700"
+            fontFamily="DM Sans, sans-serif"
+            opacity="0.85"
+          >
+            PDF
+          </text>
 
           {/* Traveling dot + trail */}
           <circle r="5.5" fill={GREEN} filter="url(#dotGlow)">
-            <animateMotion dur={dur} begin={pdfDelays[i]} repeatCount="indefinite">
+            <animateMotion
+              dur={dur}
+              begin={pdfDelays[i]}
+              repeatCount="indefinite"
+            >
               <mpath href={`#lpath${i}`} />
             </animateMotion>
-            <animate attributeName="opacity" values="0;1;1;0.2;0"
-              dur={dur} begin={pdfDelays[i]} repeatCount="indefinite" />
+            <animate
+              attributeName="opacity"
+              values="0;1;1;0.2;0"
+              dur={dur}
+              begin={pdfDelays[i]}
+              repeatCount="indefinite"
+            />
           </circle>
           <circle r="3" fill={GREEN_LIGHT} opacity="0.7">
-            <animateMotion dur={dur} begin={`calc(${pdfDelays[i]} + 0.18s)`} repeatCount="indefinite">
+            <animateMotion
+              dur={dur}
+              begin={`calc(${pdfDelays[i]} + 0.18s)`}
+              repeatCount="indefinite"
+            >
               <mpath href={`#lpath${i}`} />
             </animateMotion>
-            <animate attributeName="opacity" values="0;0.7;0.7;0;0"
-              dur={dur} begin={`calc(${pdfDelays[i]} + 0.18s)`} repeatCount="indefinite" />
+            <animate
+              attributeName="opacity"
+              values="0;0.7;0.7;0;0"
+              dur={dur}
+              begin={`calc(${pdfDelays[i]} + 0.18s)`}
+              repeatCount="indefinite"
+            />
           </circle>
         </g>
       ))}
 
       {/* ── CENTER: Processing box ── */}
-      <rect x="302" y="146" width="80" height="64" rx="10"
-        fill={CREAM} stroke={GREEN} strokeWidth="1.8"
-        filter="url(#softShadow)" />
+      <rect
+        x="302"
+        y="146"
+        width="80"
+        height="64"
+        rx="10"
+        fill={CREAM}
+        stroke={GREEN}
+        strokeWidth="1.8"
+        filter="url(#softShadow)"
+      />
       {/* Spinner */}
-      <circle cx="322" cy="167" r="9" fill="none"
-        stroke={GREEN_MID} strokeWidth="2.2"
-        strokeDasharray="34 22" strokeLinecap="round">
-        <animateTransform attributeName="transform" type="rotate"
-          values="0 322 167;360 322 167" dur="1.4s" repeatCount="indefinite" />
+      <circle
+        cx="322"
+        cy="167"
+        r="9"
+        fill="none"
+        stroke={GREEN_MID}
+        strokeWidth="2.2"
+        strokeDasharray="34 22"
+        strokeLinecap="round"
+      >
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0 322 167;360 322 167"
+          dur="1.4s"
+          repeatCount="indefinite"
+        />
       </circle>
       {/* Label rows */}
-      <rect x="312" y="182" width="42" height="2.5" rx="1.2" fill={GREEN} opacity="0.55" />
-      <rect x="317" y="189" width="32" height="2.5" rx="1.2" fill={GREEN} opacity="0.38" />
-      <text x="342" y="142" textAnchor="middle" fontSize="8" fill={GREEN}
-        fontWeight="700" fontFamily="DM Sans, sans-serif" letterSpacing="0.06em">AI ENGINE</text>
+      <rect
+        x="312"
+        y="182"
+        width="42"
+        height="2.5"
+        rx="1.2"
+        fill={GREEN}
+        opacity="0.55"
+      />
+      <rect
+        x="317"
+        y="189"
+        width="32"
+        height="2.5"
+        rx="1.2"
+        fill={GREEN}
+        opacity="0.38"
+      />
+      <text
+        x="342"
+        y="142"
+        textAnchor="middle"
+        fontSize="8"
+        fill={GREEN}
+        fontWeight="700"
+        fontFamily="DM Sans, sans-serif"
+        letterSpacing="0.06em"
+      >
+        AI ENGINE
+      </text>
 
       {/* ── RIGHT: Traveling dots outward ── */}
       {[0, 1, 2].map((i) => (
         <g key={`rdot${i}`}>
           <circle r="5.5" fill={GREEN} filter="url(#dotGlow)">
-            <animateMotion dur={dur} begin={dataDelays[i]} repeatCount="indefinite">
+            <animateMotion
+              dur={dur}
+              begin={dataDelays[i]}
+              repeatCount="indefinite"
+            >
               <mpath href={`#rpath${i}`} />
             </animateMotion>
-            <animate attributeName="opacity" values="0;1;1;0.2;0"
-              dur={dur} begin={dataDelays[i]} repeatCount="indefinite" />
+            <animate
+              attributeName="opacity"
+              values="0;1;1;0.2;0"
+              dur={dur}
+              begin={dataDelays[i]}
+              repeatCount="indefinite"
+            />
           </circle>
           <circle r="3" fill={GREEN_LIGHT} opacity="0.7">
-            <animateMotion dur={dur} begin={`calc(${dataDelays[i]} + 0.18s)`} repeatCount="indefinite">
+            <animateMotion
+              dur={dur}
+              begin={`calc(${dataDelays[i]} + 0.18s)`}
+              repeatCount="indefinite"
+            >
               <mpath href={`#rpath${i}`} />
             </animateMotion>
-            <animate attributeName="opacity" values="0;0.7;0.7;0;0"
-              dur={dur} begin={`calc(${dataDelays[i]} + 0.18s)`} repeatCount="indefinite" />
+            <animate
+              attributeName="opacity"
+              values="0;0.7;0.7;0;0"
+              dur={dur}
+              begin={`calc(${dataDelays[i]} + 0.18s)`}
+              repeatCount="indefinite"
+            />
           </circle>
         </g>
       ))}
 
       {/* ── RIGHT: Structured output cards ── */}
       {[
-        { cy: 78,  label: "SEC Rule 10b-5", tag: "HIGH",  tagColor: "#1b4332" },
-        { cy: 178, label: "GDPR Art. 17",   tag: "MED",   tagColor: "#2d6a4f" },
-        { cy: 278, label: "Basel III §422", tag: "LOW",   tagColor: "#40916c" },
+        { cy: 78, label: "SEC Rule 10b-5", tag: "HIGH", tagColor: "#1b4332" },
+        { cy: 178, label: "GDPR Art. 17", tag: "MED", tagColor: "#2d6a4f" },
+        { cy: 278, label: "Basel III §422", tag: "LOW", tagColor: "#40916c" },
       ].map((item, i) => (
         <g key={`out${i}`}>
-          <rect x="572" y={item.cy - 30} width="62" height="60" rx="6"
-            fill={CREAM} stroke={GREEN_MID} strokeWidth="1.4"
-            filter="url(#softShadow)" />
+          <rect
+            x="572"
+            y={item.cy - 30}
+            width="62"
+            height="60"
+            rx="6"
+            fill={CREAM}
+            stroke={GREEN_MID}
+            strokeWidth="1.4"
+            filter="url(#softShadow)"
+          />
           {/* Tag pill */}
-          <rect x="578" y={item.cy - 24} width="26" height="11" rx="4"
-            fill={item.tagColor} />
-          <text x="591" y={item.cy - 15} textAnchor="middle" fontSize="6.5"
-            fill={CREAM} fontWeight="700" fontFamily="DM Sans, sans-serif">{item.tag}</text>
+          <rect
+            x="578"
+            y={item.cy - 24}
+            width="26"
+            height="11"
+            rx="4"
+            fill={item.tagColor}
+          />
+          <text
+            x="591"
+            y={item.cy - 15}
+            textAnchor="middle"
+            fontSize="6.5"
+            fill={CREAM}
+            fontWeight="700"
+            fontFamily="DM Sans, sans-serif"
+          >
+            {item.tag}
+          </text>
           {/* Data rows */}
-          <rect x="578" y={item.cy - 8}  width="46" height="2.5" rx="1.2" fill={GREEN} opacity="0.6" />
-          <rect x="578" y={item.cy - 1}  width="38" height="2.5" rx="1.2" fill={GREEN} opacity="0.42" />
-          <rect x="578" y={item.cy + 6}  width="42" height="2.5" rx="1.2" fill={GREEN} opacity="0.42" />
-          <rect x="578" y={item.cy + 13} width="30" height="2.5" rx="1.2" fill={GREEN} opacity="0.28" />
+          <rect
+            x="578"
+            y={item.cy - 8}
+            width="46"
+            height="2.5"
+            rx="1.2"
+            fill={GREEN}
+            opacity="0.6"
+          />
+          <rect
+            x="578"
+            y={item.cy - 1}
+            width="38"
+            height="2.5"
+            rx="1.2"
+            fill={GREEN}
+            opacity="0.42"
+          />
+          <rect
+            x="578"
+            y={item.cy + 6}
+            width="42"
+            height="2.5"
+            rx="1.2"
+            fill={GREEN}
+            opacity="0.42"
+          />
+          <rect
+            x="578"
+            y={item.cy + 13}
+            width="30"
+            height="2.5"
+            rx="1.2"
+            fill={GREEN}
+            opacity="0.28"
+          />
         </g>
       ))}
 
       {/* ── Bottom labels ── */}
-      <text x="46"  y="328" textAnchor="middle" fontSize="9.5" fill={INK}
-        opacity="0.45" fontFamily="DM Sans, sans-serif" fontWeight="500">RAW PDFs</text>
-      <text x="322" y="328" textAnchor="middle" fontSize="9.5" fill={GREEN}
-        opacity="0.75" fontFamily="DM Sans, sans-serif" fontWeight="600">PROCESSING</text>
-      <text x="603" y="328" textAnchor="middle" fontSize="9.5" fill={INK}
-        opacity="0.45" fontFamily="DM Sans, sans-serif" fontWeight="500">STRUCTURED</text>
+      <text
+        x="46"
+        y="328"
+        textAnchor="middle"
+        fontSize="9.5"
+        fill={INK}
+        opacity="0.45"
+        fontFamily="DM Sans, sans-serif"
+        fontWeight="500"
+      >
+        RAW PDFs
+      </text>
+      <text
+        x="322"
+        y="328"
+        textAnchor="middle"
+        fontSize="9.5"
+        fill={GREEN}
+        opacity="0.75"
+        fontFamily="DM Sans, sans-serif"
+        fontWeight="600"
+      >
+        PROCESSING
+      </text>
+      <text
+        x="603"
+        y="328"
+        textAnchor="middle"
+        fontSize="9.5"
+        fill={INK}
+        opacity="0.45"
+        fontFamily="DM Sans, sans-serif"
+        fontWeight="500"
+      >
+        STRUCTURED
+      </text>
     </svg>
   );
 }
-
+const MotionImage = motion(Image);
 /* ─────────────── Main Page ─────────────── */
 export default function Home() {
-  const [isDragging, setIsDragging]   = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [uploadError, setUploadError]  = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDragOver  = (e: React.DragEvent) => { e.preventDefault(); setIsDragging(true);  };
-  const handleDragLeave = (e: React.DragEvent) => { e.preventDefault(); setIsDragging(false); };
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
 
   const validateAndSetFile = (file: File) => {
     if (!file.name.endsWith(".zip")) {
@@ -247,10 +520,12 @@ export default function Home() {
   return (
     <div
       className="min-h-dvh flex flex-col text-foreground selection:bg-primary/20"
-      style={{ backgroundColor: "#f5f5dc", fontFamily: "'DM Sans', sans-serif" }}
+      style={{
+        backgroundColor: "#f5f5dc",
+        fontFamily: "'DM Sans', sans-serif",
+      }}
     >
       <main className="flex-1 flex flex-col">
-
         {/* ── SECTION 1: HERO ── */}
         <section
           className="relative px-8 lg:px-16 flex flex-col items-center justify-center overflow-hidden"
@@ -286,13 +561,56 @@ export default function Home() {
               top: "-18%",
               left: "50%",
               transform: "translateX(-50%)",
-              background: "radial-gradient(ellipse at center, #40916c 0%, transparent 70%)",
+              background:
+                "radial-gradient(ellipse at center, #40916c 0%, transparent 70%)",
               opacity: 0.1,
             }}
           />
 
-          <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+          {/* Center-top product brand header */}
+          {/* Product Brand */}
+          <div className="relative z-10 flex justify-center mb-10">
+            <div className="flex items-center gap-3">
+              {/* Left Leaf */}
+              <MotionImage
+                src="/leaf.png"
+                alt="Leaf"
+                width={32}
+                height={32}
+                className="w-8 h-8"
+                initial={{ opacity: 0, x: -30, rotate: -20 }}
+                animate={{ opacity: 1, x: 0, rotate: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              />
 
+              {/* Brand Name */}
+              <motion.h1
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#1b3a2d]"
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                }}
+              >
+                CorpMonitor
+              </motion.h1>
+
+              {/* Right Leaf */}
+              <MotionImage
+                src="/leaf.png"
+                alt="Leaf"
+                width={32}
+                height={32}
+                className="w-8 h-8 rotate-180"
+                initial={{ opacity: 0, x: -30, rotate: 20 }}
+                animate={{ opacity: 1, x: 0, rotate: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              />
+            </div>
+          </div>
+
+          <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
             {/* Left column — text + KPI cards below CTA */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -331,8 +649,11 @@ export default function Home() {
                 <br />
                 <em
                   style={{
-                    fontStyle: "italic",
-                    backgroundImage: "linear-gradient(135deg, #2d6a4f 0%, #40916c 55%, #74c69d 100%)",
+                    fontFamily: "'DM_Sans', Georgia, serif",
+                    fontWeight: 10,
+                    fontSize: "clamp(2rem, 3.2vw, 3.6rem)",
+                    backgroundImage:
+                      "linear-gradient(135deg, #2d6a4f 0%, #40916c 55%, #74c69d 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -352,7 +673,8 @@ export default function Home() {
                 }}
               >
                 CorpMonitor tracks regulatory changes across 180+ jurisdictions
-                in real time — so your legal team never misses a filing deadline.
+                in real time — so your legal team never misses a filing
+                deadline.
               </p>
 
               <Button
@@ -373,9 +695,24 @@ export default function Home() {
               {/* KPI cards — horizontal row below the CTA */}
               <div className="grid grid-cols-3 gap-3 w-full pt-2">
                 {[
-                  { title: "180+",          sub: "Jurisdictions",    icon: Globe,    delay: 0.4 },
-                  { title: "Real-time",     sub: "Alerts",           icon: BellRing, delay: 0.5 },
-                  { title: "AI-Powered",    sub: "Classification",   icon: Zap,      delay: 0.6 },
+                  {
+                    title: "180+",
+                    sub: "Jurisdictions",
+                    icon: Globe,
+                    delay: 0.4,
+                  },
+                  {
+                    title: "Real-time",
+                    sub: "Alerts",
+                    icon: BellRing,
+                    delay: 0.5,
+                  },
+                  {
+                    title: "AI-Powered",
+                    sub: "Classification",
+                    icon: Zap,
+                    delay: 0.6,
+                  },
                 ].map((stat) => (
                   <motion.div
                     key={stat.title}
@@ -390,29 +727,46 @@ export default function Home() {
                         border: "1px solid rgba(45,106,79,0.2)",
                         backdropFilter: "blur(8px)",
                       }}
-                      onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(45,106,79,0.48)")}
-                      onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(45,106,79,0.2)")}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.borderColor =
+                          "rgba(45,106,79,0.48)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.borderColor =
+                          "rgba(45,106,79,0.2)")
+                      }
                     >
                       <div
                         className="w-8 h-8 rounded-lg flex items-center justify-center"
                         style={{ backgroundColor: "rgba(45,106,79,0.12)" }}
                       >
-                        <stat.icon className="w-4 h-4" style={{ color: "#2d6a4f" }} />
+                        <stat.icon
+                          className="w-4 h-4"
+                          style={{ color: "#2d6a4f" }}
+                        />
                       </div>
                       <div>
-                        <p style={{
-                          fontFamily: "'DM Sans', sans-serif",
-                          fontWeight: 700,
-                          fontSize: "0.95rem",
-                          color: "#1b3a2d",
-                          lineHeight: 1.2,
-                        }}>{stat.title}</p>
-                        <p style={{
-                          fontFamily: "'DM Sans', sans-serif",
-                          fontSize: "0.74rem",
-                          color: "#5a7a69",
-                          marginTop: "2px",
-                        }}>{stat.sub}</p>
+                        <p
+                          style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontWeight: 700,
+                            fontSize: "0.95rem",
+                            color: "#1b3a2d",
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          {stat.title}
+                        </p>
+                        <p
+                          style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontSize: "0.74rem",
+                            color: "#5a7a69",
+                            marginTop: "2px",
+                          }}
+                        >
+                          {stat.sub}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
@@ -429,7 +783,6 @@ export default function Home() {
             >
               <PdfFlowAnimation />
             </motion.div>
-
           </div>
         </section>
 
@@ -439,7 +792,6 @@ export default function Home() {
           style={{ backgroundColor: "rgba(255,255,248,0.55)" }}
         >
           <div className="max-w-4xl w-full flex flex-col items-center">
-
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -460,14 +812,16 @@ export default function Home() {
               >
                 Upload Regulatory Documents
               </h2>
-              <p style={{
-                fontFamily: "'DM Sans', sans-serif",
-                color: "#4a6858",
-                fontSize: "0.975rem",
-                maxWidth: "32rem",
-                margin: "0 auto",
-                lineHeight: 1.65,
-              }}>
+              <p
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  color: "#4a6858",
+                  fontSize: "0.975rem",
+                  maxWidth: "32rem",
+                  margin: "0 auto",
+                  lineHeight: 1.65,
+                }}
+              >
                 Drop your ZIP archive containing PDF filings for instant
                 AI-powered analysis and classification.
               </p>
@@ -489,19 +843,23 @@ export default function Home() {
                     ? "rgba(45,106,79,0.06)"
                     : "rgba(255,255,248,0.8)",
                   transform: isDragging ? "scale(1.008)" : "scale(1)",
-                  boxShadow: isDragging ? "0 8px 40px rgba(45,106,79,0.15)" : "none",
+                  boxShadow: isDragging
+                    ? "0 8px 40px rgba(45,106,79,0.15)"
+                    : "none",
                 }}
                 onDragOver={handleDragOver}
                 onDragEnter={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                onMouseEnter={e => {
+                onMouseEnter={(e) => {
                   if (!isDragging)
-                    (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(45,106,79,0.55)";
+                    (e.currentTarget as HTMLDivElement).style.borderColor =
+                      "rgba(45,106,79,0.55)";
                 }}
-                onMouseLeave={e => {
+                onMouseLeave={(e) => {
                   if (!isDragging)
-                    (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(45,106,79,0.3)";
+                    (e.currentTarget as HTMLDivElement).style.borderColor =
+                      "rgba(45,106,79,0.3)";
                 }}
               >
                 <div className="p-12 md:p-20 flex flex-col items-center justify-center min-h-90 text-center">
@@ -526,29 +884,36 @@ export default function Home() {
                         <div
                           className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300"
                           style={{
-                            backgroundColor: isDragging ? "rgba(45,106,79,0.12)" : "rgba(45,106,79,0.07)",
+                            backgroundColor: isDragging
+                              ? "rgba(45,106,79,0.12)"
+                              : "rgba(45,106,79,0.07)",
                             color: "#2d6a4f",
                           }}
                         >
                           <CloudUpload className="w-10 h-10" />
                         </div>
 
-                        <h3 style={{
-                          fontFamily: "'Cormorant Garamond', Georgia, serif",
-                          fontWeight: 600,
-                          fontSize: "1.65rem",
-                          color: "#1b3a2d",
-                          marginBottom: "0.5rem",
-                        }}>
+                        <h3
+                          style={{
+                            fontFamily: "'Cormorant Garamond', Georgia, serif",
+                            fontWeight: 600,
+                            fontSize: "1.65rem",
+                            color: "#1b3a2d",
+                            marginBottom: "0.5rem",
+                          }}
+                        >
                           Drag & drop your ZIP folder here
                         </h3>
-                        <p style={{
-                          fontFamily: "'DM Sans', sans-serif",
-                          color: "#5a7a69",
-                          fontSize: "0.875rem",
-                          marginBottom: "2rem",
-                        }}>
-                          Supports .zip archives containing PDF documents · Max 500MB
+                        <p
+                          style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            color: "#5a7a69",
+                            fontSize: "0.875rem",
+                            marginBottom: "2rem",
+                          }}
+                        >
+                          Supports .zip archives containing PDF documents · Max
+                          500MB
                         </p>
 
                         {uploadError && (
@@ -561,7 +926,13 @@ export default function Home() {
                             }}
                           >
                             <AlertCircle className="w-4 h-4 shrink-0" />
-                            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.875rem", fontWeight: 500 }}>
+                            <span
+                              style={{
+                                fontFamily: "'DM Sans', sans-serif",
+                                fontSize: "0.875rem",
+                                fontWeight: 500,
+                              }}
+                            >
                               {uploadError}
                             </span>
                           </div>
@@ -579,13 +950,21 @@ export default function Home() {
                             fontSize: "0.9rem",
                             cursor: "pointer",
                           }}
-                          onMouseEnter={e => {
-                            (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(45,106,79,0.08)";
-                            (e.currentTarget as HTMLButtonElement).style.borderColor = "#2d6a4f";
+                          onMouseEnter={(e) => {
+                            (
+                              e.currentTarget as HTMLButtonElement
+                            ).style.backgroundColor = "rgba(45,106,79,0.08)";
+                            (
+                              e.currentTarget as HTMLButtonElement
+                            ).style.borderColor = "#2d6a4f";
                           }}
-                          onMouseLeave={e => {
-                            (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
-                            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(45,106,79,0.45)";
+                          onMouseLeave={(e) => {
+                            (
+                              e.currentTarget as HTMLButtonElement
+                            ).style.backgroundColor = "transparent";
+                            (
+                              e.currentTarget as HTMLButtonElement
+                            ).style.borderColor = "rgba(45,106,79,0.45)";
                           }}
                         >
                           Browse Files
@@ -600,26 +979,34 @@ export default function Home() {
                       >
                         <div
                           className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6"
-                          style={{ backgroundColor: "rgba(45,106,79,0.1)", color: "#2d6a4f" }}
+                          style={{
+                            backgroundColor: "rgba(45,106,79,0.1)",
+                            color: "#2d6a4f",
+                          }}
                         >
                           <CheckCircle2 className="w-10 h-10" />
                         </div>
-                        <h3 style={{
-                          fontFamily: "'Cormorant Garamond', Georgia, serif",
-                          fontWeight: 600,
-                          fontSize: "1.65rem",
-                          color: "#1b3a2d",
-                          marginBottom: "0.35rem",
-                        }}>
+                        <h3
+                          style={{
+                            fontFamily: "'Cormorant Garamond', Georgia, serif",
+                            fontWeight: 600,
+                            fontSize: "1.65rem",
+                            color: "#1b3a2d",
+                            marginBottom: "0.35rem",
+                          }}
+                        >
                           {uploadedFile.name}
                         </h3>
-                        <p style={{
-                          fontFamily: "'DM Sans', sans-serif",
-                          color: "#5a7a69",
-                          fontSize: "0.875rem",
-                          marginBottom: "2rem",
-                        }}>
-                          {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB · ready to process
+                        <p
+                          style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            color: "#5a7a69",
+                            fontSize: "0.875rem",
+                            marginBottom: "2rem",
+                          }}
+                        >
+                          {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB ·
+                          ready to process
                         </p>
                         <div className="flex gap-3">
                           <button
@@ -695,40 +1082,52 @@ export default function Home() {
                       backgroundColor: "rgba(255,255,248,0.85)",
                       border: "1px solid rgba(45,106,79,0.18)",
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(45,106,79,0.38)")}
-                    onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(45,106,79,0.18)")}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.borderColor =
+                        "rgba(45,106,79,0.38)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.borderColor =
+                        "rgba(45,106,79,0.18)")
+                    }
                   >
                     <div
                       className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
                       style={{ backgroundColor: "rgba(45,106,79,0.1)" }}
                     >
-                      <card.icon className="w-5 h-5" style={{ color: "#2d6a4f" }} />
+                      <card.icon
+                        className="w-5 h-5"
+                        style={{ color: "#2d6a4f" }}
+                      />
                     </div>
-                    <h4 style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
-                      fontWeight: 600,
-                      fontSize: "1.15rem",
-                      color: "#1b3a2d",
-                      marginBottom: "0.5rem",
-                    }}>
+                    <h4
+                      style={{
+                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontWeight: 600,
+                        fontSize: "1.15rem",
+                        color: "#1b3a2d",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
                       {card.title}
                     </h4>
-                    <p style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      color: "#5a7a69",
-                      fontSize: "0.865rem",
-                      lineHeight: 1.65,
-                    }}>
+                    <p
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        color: "#5a7a69",
+                        fontSize: "0.865rem",
+                        lineHeight: 1.65,
+                      }}
+                    >
                       {card.desc}
                     </p>
                   </div>
                 </motion.div>
               ))}
             </div>
-
           </div>
+           
         </section>
-
       </main>
     </div>
   );
